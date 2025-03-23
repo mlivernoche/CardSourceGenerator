@@ -4,13 +4,18 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<LangVersion>latest</LangVersion>
-		<Version>1.2.7</Version>
+		<Version>1.3.0</Version>
 		<IncludeBuildOutpout>false</IncludeBuildOutpout>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<RepositoryUrl>https://github.com/mlivernoche/CardSourceGenerator.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/mlivernoche/CardSourceGenerator</PackageProjectUrl>
+		<Authors>Matthew Livernoche</Authors>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="../readme.md" Pack="true" PackagePath="\"/>
+		<None Include="../readme.md" Pack="true" PackagePath="" />
+		<None Include="../LICENSE.txt" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 	<ItemGroup>
