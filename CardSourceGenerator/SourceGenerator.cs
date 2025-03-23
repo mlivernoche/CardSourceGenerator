@@ -351,10 +351,10 @@ namespace {nameof(CardSourceGenerator)}
             {
                 var cards = new HashSet<INamedYGOCard>(YGOProData.GetCardData(data.Text));
 
-                spc.AddSource($"{YGOCards}.CardData.g.cs", CreateCardDataCode());
                 spc.AddSource($"{YGOCards}.Names.{data.Name}.g.cs", CreateRawNamesSourceCode(cards));
                 spc.AddSource($"{YGOCards}.MappedNames.{data.Name}.g.cs", CreateMappedNamesSourceCode(cards));
             });
+            context.RegisterPostInitializationOutput(spc => spc.AddSource($"{YGOCards}.CardData.g.cs", CreateCardDataCode()));
         }
     }
 }
