@@ -1,6 +1,11 @@
 # CardSourceGenerator
 This is an analyzer for generating types based on Yu-Gi-Oh card names. This allows card name errors (e.g., typos) to be detected by the compiler (i.e., using the wrong card name throws a compilation error). You can access these card names via `YGOCards.CardNameMap` or by going `YGOCards.[YourCardName]`.
 
+## Related Repositories
+1. [CardSourceGenerator](https://github.com/mlivernoche/CardSourceGenerator)
+2. [YGOHandAnalysisFramework](https://github.com/mlivernoche/YGOHandAnalysisFramework)
+3. [AdvancedDeckBuilder](https://github.com/mlivernoche/AdvancedDeckBuilder)
+
 ## How To Install
 1. Add the analyzer to your project. It can be a project reference or a package.
 2. Then, you need to provide the card data. Currently, the only supported format is the JSON data provided by YGOProDeck.com, [available via their API endpoint](https://ygoprodeck.com/api-guide/).
