@@ -7,8 +7,10 @@ This is an analyzer for generating types based on Yu-Gi-Oh card names. This allo
 3. [AdvancedDeckBuilder](https://github.com/mlivernoche/AdvancedDeckBuilder)
 
 ## How To Install
-1. Add the analyzer to your project. It can be a project reference or a package.
-2. Then, you need to provide the card data. Currently, the only supported format is the JSON data provided by YGOProDeck.com, [available via their API endpoint](https://ygoprodeck.com/api-guide/).
+[This repository is available as a NuGet package.](https://www.nuget.org/packages/CardSourceGenerator/)
+
+1. Add the analyzer to your project. It can be a project reference or a package (as a package is much easier).
+2. Then, you need to provide the card data. Currently, the only supported format is the JSON data provided by YGOProDeck.com (no affiliation), [available via their API endpoint](https://ygoprodeck.com/api-guide/).
 3. Add the JSON data to your project by downloading the JSON file from YGOProDeck, then adding it to your project (I usually add a folder called CardData and put it in there).
 4. Next, you must tell the analyzer where the card data is. This can be done by editing the `.csproj` file with this property:
 
