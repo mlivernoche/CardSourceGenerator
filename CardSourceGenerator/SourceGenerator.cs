@@ -145,7 +145,7 @@ namespace {nameof(CardSourceGenerator)}
             }}
 
             public bool Equals({YGOCardName} other) => Name.Equals(other.Name, StringComparison.Ordinal);
-            public override bool Equals(object obj) => obj is {YGOCardName} other && Equals(other);
+            public override bool Equals(object? obj) => obj is {YGOCardName} other && Equals(other);
             public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(Name);
             public static bool operator ==({YGOCardName} x, {YGOCardName} y) => x.Equals(y);
             public static bool operator !=({YGOCardName} x, {YGOCardName} y) => !(x == y);
