@@ -7,7 +7,7 @@ namespace CardSourceGenerator
 {
     internal sealed class YGOProData
     {
-        public IReadOnlyList<INamedYGOCard> Data { get; } = Array.Empty<INamedYGOCard>();
+        public IReadOnlyList<INamedYGOCard> Data { get; } = [];
 
         public YGOProData(JsonElement element)
         {
@@ -31,7 +31,7 @@ namespace CardSourceGenerator
             var reader = new Utf8JsonReader(byteSource);
             if (!JsonDocument.TryParseValue(ref reader, out var jsonDocument))
             {
-                return Array.Empty<INamedYGOCard>();
+                return [];
             }
 
             return new YGOProData(jsonDocument.RootElement).Data;
