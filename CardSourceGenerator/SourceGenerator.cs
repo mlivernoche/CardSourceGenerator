@@ -199,7 +199,7 @@ namespace {nameof(CardSourceGenerator)}
         public interface IYGOCard
         {{
             {YGOCards}.{YGOCardName} Name {{ get; }}
-            string Passcode {{ get; }} = string.Empty;
+            string Passcode {{ get; }}
             StartingDeckLocation StartingLocation {{ get; }}
             string Description {{ get; }}
             int? Level {{ get; }}
