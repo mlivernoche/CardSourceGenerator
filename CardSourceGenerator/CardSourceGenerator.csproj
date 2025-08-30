@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<LangVersion>latest</LangVersion>
-		<Version>1.3.3</Version>
+		<Version>1.3.4</Version>
 		<IncludeBuildOutpout>false</IncludeBuildOutpout>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
