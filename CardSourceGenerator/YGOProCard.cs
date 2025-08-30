@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 
 namespace CardSourceGenerator
 {
@@ -10,7 +11,15 @@ namespace CardSourceGenerator
         public YGOProCard(JsonElement element)
         {
             Name = element.TryGetProperty("name");
-            Passcode = element.TryGetProperty("id", static jsonElement => jsonElement.GetString() ?? string.Empty);
+            Passcode = element.TryGetProperty("id", static jsonElement =>
+            {
+                if(jsonElement.TryGetInt32(out _))
+                {
+                    return jsonElement.ToString().PadLeft(8, '0');
+                }
+
+                throw new InvalidOperationException("Cannot deserialize passcode.");
+            });
         }
     }
 }

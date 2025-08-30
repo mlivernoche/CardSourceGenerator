@@ -134,7 +134,7 @@ namespace {nameof(CardSourceGenerator)}
                 var identifier = GetIdentifier(card.Name);
 
                 sb.Append($@"
-            public const int {identifier} = {card.Passcode};");
+            public const string {identifier} = ""{card.Passcode}"";");
             }
 
             sb.Append(@"
@@ -199,27 +199,43 @@ namespace {nameof(CardSourceGenerator)}
         public interface IYGOCard
         {{
             {YGOCards}.{YGOCardName} Name {{ get; }}
-            string Passcode {{ get; }}
             StartingDeckLocation StartingLocation {{ get; }}
+            string HumanReadableCardType {{ get; }}
+            string Passcode {{ get; }}
+
             string Description {{ get; }}
+
+            string PendulumDescription {{ get; }}
+            int? PendulumScale {{ get; }}
+
             int? Level {{ get; }}
             int? AttackPoints {{ get; }}
             int? DefensePoints {{ get; }}
             string? MonsterType {{ get; }}
             string? MonsterAttribute {{ get; }}
+
+            IReadOnlyList<string> LinkMarkers {{ get; }}
         }}
 
         private sealed class YGOProCard : IYGOCard
         {{
             public {YGOCards}.{YGOCardName} Name {{ get; }}
             public StartingDeckLocation StartingLocation {{ get; }}
+            public string HumanReadableCardType {{ get; }} = string.Empty;
             public string Passcode {{ get; }} = string.Empty;
+
             public string Description {{ get; }} = string.Empty;
+
+            public string PendulumDescription {{ get; }} = string.Empty;
+            public int? PendulumScale {{ get; }} = null;
+
             public int? Level {{ get; }}
             public int? AttackPoints {{ get; }}
             public int? DefensePoints {{ get; }}
             public string? MonsterType {{ get; }}
             public string? MonsterAttribute {{ get; }}
+
+            public IReadOnlyList<string> LinkMarkers {{ get; }} = Array.Empty<string>();
 
             public YGOProCard(JsonElement element)
             {{
@@ -252,35 +268,55 @@ namespace {nameof(CardSourceGenerator)}
                 {{
                     if (element.TryGetProperty(""level"", out var el))
                     {{
-                        Level = GetAtkOrDef(el);
+                        Level = GetOptionalInt(el);
                     }}
                 }}
 
                 {{
                     if (element.TryGetProperty(""id"", out var el))
                     {{
-                        Passcode = el.GetString() ?? throw new Exception(""id not a string"");
+                        Passcode = GetNumberAsString(el);
                     }}
                 }}
 
                 {{
-                    if (element.TryGetProperty(""desc"", out var el))
+                    if (element.TryGetProperty(""humanReadableCardType"", out var el))
+                    {{
+                        HumanReadableCardType = el.GetString();
+                    }}
+                }}
+
+                {{
+                    if (element.TryGetProperty(""pend_desc"", out var pendEl) &&
+                        element.TryGetProperty(""monster_desc"", out var monsterEl))
+                    {{
+                        PendulumDescription = pendEl.GetString() ?? throw new Exception(""pend_desc not a string"");
+                        Description = monsterEl.GetString() ?? throw new Exception(""monster_desc not a string"");
+                    }}
+                    else if (element.TryGetProperty(""desc"", out var el))
                     {{
                         Description = el.GetString() ?? throw new Exception(""desc not a string"");
                     }}
                 }}
 
                 {{
+                    if (element.TryGetProperty(""scale"", out var el))
+                    {{
+                        PendulumScale = GetOptionalInt(el);
+                    }}
+                }}
+
+                {{
                     if (element.TryGetProperty(""atk"", out var el))
                     {{
-                        AttackPoints = GetAtkOrDef(el);
+                        AttackPoints = GetOptionalInt(el);
                     }}
                 }}
 
                 {{
                     if (element.TryGetProperty(""def"", out var el))
                     {{
-                        DefensePoints = GetAtkOrDef(el);
+                        DefensePoints = GetOptionalInt(el);
                     }}
 
                 }}
@@ -298,14 +334,36 @@ namespace {nameof(CardSourceGenerator)}
                         MonsterAttribute = el.GetString() ?? throw new Exception(""attribute not a string"");
                     }}
                 }}
+
+                {{
+                    if (element.TryGetProperty(""linkmarkers"", out var el))
+                    {{
+                        var list = new List<string>();
+                        LinkMarkers = list;
+                        foreach (var item in el.EnumerateArray())
+                        {{
+                            list.Add(item.GetString() ?? throw new Exception(""link marker not a string""));
+                        }}
+                    }}
+                }}
             }}
 
-            private static int? GetAtkOrDef(JsonElement element)
+            private static int? GetOptionalInt(JsonElement element)
             {{
                 return element.ValueKind switch
                 {{
                     JsonValueKind.Null => null,
                     JsonValueKind.Number => element.GetInt32(),
+                    _ => throw new InvalidOperationException(element.GetRawText())
+                }};
+            }}
+
+            private static string GetNumberAsString(JsonElement element)
+            {{
+                return element.ValueKind switch
+                {{
+                    JsonValueKind.Null => string.Empty,
+                    JsonValueKind.Number => element.ToString().PadLeft(8, '0'),
                     _ => throw new InvalidOperationException(element.GetRawText())
                 }};
             }}
